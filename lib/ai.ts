@@ -1,8 +1,8 @@
-import * as pdfjsLib from "pdfjs-dist";
+// Dynamically configure PDF.js without triggering Node canvas dependencies
+async function getPdfText(file: File): Promise<string> {
+  const pdfjsLib = await import("pdfjs-dist/build/pdf");
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-
-export async function extractTextFromPdf(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
   const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
   let fullText = "";
@@ -15,6 +15,10 @@ export async function extractTextFromPdf(file: File): Promise<string> {
   }
 
   return fullText;
+}
+
+export async function extractTextFromPdf(file: File): Promise<string> {
+  return await getPdfText(file);
 }
 
 async function callGroq(pdfText: string) {
