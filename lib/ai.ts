@@ -1,4 +1,3 @@
-// Dynamically configure PDF.js without triggering Node canvas dependencies
 async function getPdfText(file: File): Promise<string> {
   const pdfjsLib = await import("pdfjs-dist/build/pdf");
   pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
