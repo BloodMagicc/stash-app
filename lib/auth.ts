@@ -4,8 +4,9 @@ import { createClient } from "@libsql/client";
 const url = process.env.TURSO_DATABASE_URL;
 const authToken = process.env.TURSO_AUTH_TOKEN;
 
+// Create client dynamically
 export const dbClient = createClient({
-  url: url || "libsql://dummy-url.turso.io",
+  url: url && url.startsWith("libsql://") ? url : "libsql://dummy-url.turso.io",
   authToken: authToken || "dummy-token",
 });
 
@@ -17,5 +18,5 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
-  secret: process.env.BETTER_AUTH_SECRET || "stash-vault-secret-key-32-chars-minimum",
+  secret: process.env.BETTER_AUTH_SECRET || "fallback-secret-at-least-32-chars-long",
 });
