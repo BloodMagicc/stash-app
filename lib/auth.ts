@@ -1,9 +1,12 @@
 import { betterAuth } from "better-auth";
 import { createClient } from "@libsql/client";
 
+const url = process.env.TURSO_DATABASE_URL;
+const authToken = process.env.TURSO_AUTH_TOKEN;
+
 export const dbClient = createClient({
-  url: process.env.TURSO_DATABASE_URL || "libsql://dummy-stash-db.turso.io",
-  authToken: process.env.TURSO_AUTH_TOKEN || "dummy-token",
+  url: url || "libsql://dummy-url.turso.io",
+  authToken: authToken || "dummy-token",
 });
 
 export const auth = betterAuth({
@@ -14,5 +17,5 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
-  secret: process.env.BETTER_AUTH_SECRET || "super-secret-key-stash-zk-2026-vault",
+  secret: process.env.BETTER_AUTH_SECRET || "stash-vault-secret-key-32-chars-minimum",
 });
